@@ -1,0 +1,418 @@
+Not Enough Servers (DMOPC '14 C3 P5)
+
+arr[][] = 1 0 0 0 | 1
+          0 1 0 0 | 1
+          0 0 1 0 | 1
+arr[] = { 4 2 1 0 }
+
+dp[] = { INF }
+
+dp[i | arr[j]] = min(dp[i | arr[j]], dp[i] + 1)
+
+---
+
+magic(agent i, mask /* Task mask */)
+{
+	if(dp[mask] >= 0) return dp
+	if(i >= n) then ret 1;
+	for(int j = 0; j < N; j++)
+		if((mask & (1 << j)) /* Is task j assigned to agent i */ == 0)
+			dp[j] = magic(i + 1 /* Check with agent i + 1 */,
+					mask | (i << j) /* Set the mask */) * prob[i][j]
+	return dp[mask];
+}
+
+call magic(0, 0) // Agent 0, no task has been assigned (mask = 0)
+
+---
+
+Field Trip
+ 
+ ans += sz[fi] / K * K;
+ cut += (sz[fi] - 1 ) / K;
+ if(cycle) cut++;
+
+---
+
+Origin of Life
+ 
+ bool eden[1 << (n * m)] = { true };
+ for(int i = 0; i < (1 << (n * m)); i++) {
+	 int j = nextGeneration(i);
+	 next[i] = j;
+	 eden[j] = false;
+ }
+ 
+ for(int i = 0; i < (1 << (n * m)); i++) {
+	 if(eden[i]) origin.push_back(i);
+ }
+ 
+ long quick_pow(long b, long exp, long mod) {
+	 if(exp == 0) return 1;
+	 long t = quick_pow(b, exp / 2, mod);
+	 if(exp & 1) return ((t * t) % mod) * (b % mod);
+	 return (t * t) % mod;
+ }
+ 
+---
+
+Example tree:
+  1
+ / \
+2   3
+   / \
+  5   6
+   \
+    7
+
+Tree: Connected acyclic graph
+Diameter of tree: Longest path in a tree
+ - Do 2 BFS's. First BFS from any node to the furthest (aka the height of the node). From that node, do another BFS to its furthest node. This is in O(2n) time.
+ - The distance from any node to one of the endpoints of the diameter is the height from that node
+ - You can find the height from all nodes in a tree in O(3n) time
+Height of tree/Depth: The longest distance from a certain node
+Radius of tree: Minimum height from a node in the tree. That node is the center.
+Center of the tree: There is at least 1 and at most 2 centers, all centers lie on the diameter
+ - When you join 2 trees and ensure the diameter and radius is the smallest, join them by their centers,
+   the radius of the new tree is equal to the larger radius, however if both trees have the same radius, the new tree's radius has radius + 1.
+   The diameter is either R2 + R3 + 2L, R1 + R2 + L or D1
+Centroid of the tree: The removal of the centroid ensures that all trees split has less than or equal to N / 2 nodes, where N is the number of nodes originally.
+
+Starting from any node u, visit every node, and return to the starting node, the number of steps equals to 2 * E
+Starting from any node u, visit every node, and don't return to the starting node, the number of steps equals to 2 * E - Height from u
+
+---
+
+CCC '16 S3
+
+dfs(u, pa):
+	bool flag = pho[u]
+	for any subtree v of node u:
+		if dfs(v, u):
+			flag = true
+	if flag:
+		connect u to pa
+	return flag
+
+---
+
+IOI '13 P1
+
+return max{R1 + L + R2, R..........?
+
+---
+
+BFS '17 P4
+Let dp[x][0] be the minimum value we can achieve at x, and let dp[x][1] be the maximum value we can achieve at x.
+Let us prove that we don’t need to store any values between the minimum and the maximum to solve for the trees above.
+If line x is correct, then the number of errors is achieved by adding the number of errors underneath it. Clearly, to find the
+minimums and maximums are the only values we need from the lines below it.
+If line x is wrong, then the number of errors is maximized by subtracting the least possible number of errors in the
+subtree, and the number of errors is minimized by subtracting the greatest number of errors in the subtree.
+If line x is unreadable, then we can take the better of the two options.
+After running the algorithm on each of the tree roots, we can simply add up the minimum and maximum errors to get the final answer.
+Runtime complexity: O(N)
+
+---
+
+Binary Indexed Trees
+
+IDX  | FIRST OCCURENCE OF BIT 1
+-----+-------------------------
+0001 | 1 (Number of cells to sum)
+0010 | 2
+0011 | 1
+0100 | 3
+0101 | 1
+ n   | __builtin_ctz(n) + 1
+
+Use int __builtin_ctz (unsigned int x) to count number of trailing zeros
+Or, use
+#define LSB(n) ((n) & -(n))
+To isolate the first set LSB
+
+Update Freq.
+bt[00101]
+bt[00110] (00101 + 1)
+bt[01000] (00110 + 10)
+bt[10000] (10000 + 10000)
+etc.
+
+void add(i, k) {
+	while(idx <= INT_MAX)
+		A[i] += k, i += LSB(i);
+}
+
+int sum(i) {
+	int sum = 0;
+	while(i > 0)
+		sum += A[i], i -= LSB(i);
+	return sum;
+}
+
+Read Freq.
+Just use another array. Or, f[12] = bt[12] - bt[11];
+
+Initialize the B array from input array A:
+for(int i = 1; i <= n; i++)
+{
+	B[i] += A[i];
+	int j = i + LSB(i);
+	if(j <= n) B[j] += B[i];
+}
+
+---
+
+Lol segment trees >.<
+
+---
+
+Funky C++ things:
+
+previous_permutations(begin, end)
+next_permutation(begin, end)
+
+---
+
+Sparse Tables
+
+Preprocessing:
+
+with N elements, we have:
+s[logN][N] so O(NlogN)
+for(l ... log of array size)
+	for(i ... array size)
+		s[l][i] = min(s[l - 1][i], s[l - 1][i + (1 << (l - 1))];
+		check that i + (1 << (l - 1)) does not overflow
+
+Query:
+
+The range [i, j] can be represented as the overlap between [i, i + 2 * k - 1] and [j - 2 ^ k + 1, j]
+
+Example:
+
+Query [l = 1, r = 7]
+len = r - l + 1 = 7
+k = (int) log2(len) = 2
+now we find min(s[lvl = 2][st = 1], s[2][7 - 2^2 + 1])
+max(s[k][l], s[k][j - 2^k + 1])
+
+---
+
+Lowest Common Ancestor (rooted trees):
+
+We can use a Euler tour to find the LCA of 2 nodes, with RMQ of the depth [Query: O(2n)]
+For the Euler tour, DFS form the root of the tree:
+       Depth
+  A --   0   Let node A be the root of the tree, it's depth is 0:
+ / \  \      We can get the Euler sequence with it's respective depths:
+B   D  G 1   Node: A B C (C) B A D E D F D A G A
+|  / \      Depth: 0 1 2  2  1 0 1 2 1 2 1 0 1 0 (I added nodes H and I after this table was created)
+C E   F  2                ^ Optional
+  |   |
+  H   I  3
+vector<int> adj[];
+vector<ip> euler;
+dfs(root, depth):
+	euler.push_back({root, depth})
+	for(int v : adj[root]) dfs(v, depth + 1);
+
+We can also do it the dp way with lca[i][j] = lca[i - 1][lca[i - 1][j]]
+Then we can query somehow...
+
+We store a table of the nodes and the distance to another node (by the power of 2):
+lca[][], we can fill it up with the formula above:
+logN rows, the "binary lifting method"
+1 - - A - A A - D D
+0 - A B A D D A E F
+  A B C D E F G H I
+
+LCA of H and I (same depth):
+H -> E -> D The final 2 nodes are same, we're done.
+I -> F -> D
+
+LCA of H and B (different depths):
+depth(H) = 3, depth(B) = 1, 3 - 1 = 2 (Target depth)
+We start at the top of the table, so:
+H -> D (1) -> E (2, jump) -> D (1), we reached the bottom of the table. Let H = D
+We do the LCA:
+D -> A The final 2 nodes are the same, we're done.
+B -> A
+
+---
+
+Longest Increasing Subsequence (LIS):
+
+int A[N], L[N + 1];
+int GetLIS()
+{
+	for(int i = 0; i < N; i++)
+	{
+		int l = 0, r = N;
+		while(l <= r)
+		{
+			
+		}
+	}
+}
+
+---
+
+Digit-Wise DP:
+
+Roger's Number (see rogernumberbeuce.c++ for comments & stuff)
+
+---
+
+SPFA (Shortest Path Faster Algorithm)
+The average run time complexity is O(|E|) however, the worst case is O(|E|*|V|)
+
+---
+
+Modular inverse
+
+---
+
+0-1 Knapsack Problem:
+If you must fill the knapsack with 0 space leftover, initialize the DP array with -INF,
+and do the 0-1 Knapsack DP regularly.
+When:
+1) N is huge: find the top W/w items where W is the total weight of your bag, and w is the ith unique weight
+2) W is huge: swap the dp state, so value becomes weight (find the min capacity for any given value)
+   -> dp[i][v] = min(dp[i-1][v], dp[i-1][v-v_i] + w_i)
+   -> if(dp[i][v] <= w) ans = max(ans, v);
+Wow.
+
+You need to consider the top (valued) k items per unique weight W.
+** To find the top k items, use a priority queue.
+
+COCI '14 Contest 2 #3 Studentsko
+Find out which cohort/group each student belongs to:
+Then do the longest non-decreasing subsequence
+Find N-LIS(on groups)
+
+CCO '17 P4 - Rainfall Storage
+Sort the pillars in decreasing orders
+Try adding each pillars in every possible location
+Then dp[i][j] = can you hold j amount of water with i pillars :)
+
+---
+
+freopen("in.txt", "r", stdin);
+freopen("out.txt", "w", stdout);
+
+---
+
+Sliding Window:
+Use a deque to get each minimum element
+from a sliding window of size K
+1) Pop front if the current element is outside of window
+2) Push element...
+	2a) To the front if the element is smaller than the first element
+	2b) To the back
+3) The first element will always be the minimum element within our window
+- This should keep the deque in monotonous order (descending)
+
+---
+
+DMOPC'13C7P6 Revenge of the Bins
+
+We must check to see if a given cut of bins is valid.
+Update all 2*i and 2*i-1
+Use a segment tree.
+Find PSA & minimum of PSA.
+
+---
+
+What did we learn so far?
+- Fenwick trees
+	- Inversions
+	- Interval sum
+	- logN data structure
+	- Range update & range query
+	- Multi dimensional (2D)
+- Segment trees
+	- Balanced binary tree
+	- Range query
+	- Use lazy propogation for range updates
+	- Multi purpose (i.e., range max/min query, sum, GCD etc)
+	- Query results must be possible from a combination of 2 child nodes
+- Single Source Shortest Path
+	- Dijkstras
+
+---
+
+Find diameter of tree using DP
+For each node, store longest distance (d1) from child node to u and second longest distance (d2).
+When pushing up, check d1 with parent d1. If greater than, then update, if not, check d2 with d1 and update. Else, do nothing.
+loop through g[u]
+	if(d1[v] + <u, v> ge d1[u])
+		d2[u] = d1[u];
+		d1[u] = d1[v] + <u, v>
+	else if(d1[v] + <u, v> ge d2[u])
+		d2[u] = d1[u]
+		d2[u] = d1[u] + <u, v>
+dia = max(d1[u]+d2[u])
+
+---
+
+Trie Data Structure
+
+Standard tries:
+ - Each node holds a character and their children (which are alphabetically ordered)
+ - Supports insertations and deletions in O(DM)
+ - Takes O(N) space
+	- N total # of chars, M length of string, D size of alphabet
+struct node
+{
+	char letter; // Letter
+	node ch[26]; // Children
+	// OR
+	map<char, node> ch;
+	// Additionally, we may have
+	bool wordEnd;
+	
+	// Add other data here...
+}
+
+Compressed tries:
+ - Store letter and the entire word to avoid expansion of the entire word
+
+Insert "bear":
+	o -> { b, bear }
+Insert "bell":
+	o -> { b, } -> { e, } -> { a, ar }
+				      \----> { l, ll }
+
+Yeye baby. Compressing long chains of redundant nodes.
+For example:
+We can solve the problem of finding the maximum XOR of 2 numbers in O(NlogV) time.
+ - Build a trie of the binary values of each element in a[i]
+ - For each element in a[i]
+   - Loop through each bit (MSB to LSB), and go through the trie, selecting the opposite bit if possible
+   - This should greedily give us the maximum XOR for the element a[i]
+ - Find the maximum overall.
+
+Given N numbers, which continuous subarray gives the largest XOR?
+ - Build a prefix XOR array
+ - Then run the algorithm above but on the prefix array
+
+Daymn.
+
+Hashing is a polynomial function:
+Given some bytes given by b(n), then our hash function f(b) will be:
+f(b) = b(0)*pow(s,n) + b(1)*pow(s,n-1) + ... + b(n-1)*pow(s,0)
+Where s is the seed (some large prime number, maybe 2^32-1)
+So hashing "Hello" will be:
+('H')*s^4 + ('e')*s^3 + ('l')*s^2 + ('l')*s + ('o')
+Beware hash collisions
+Also, hasing any substring will take O(1) time if we store our hashes in an array ds.
+
+Hashing:
+S of length N: s0 s1 s2 s3 s4 s5 s6 ... sN-1
+T of length M:       t0 t1 t2 t3
+             [0,i-1][i,    i+M-1][i+M, i+N-1]
+
+To check substring in O(N+M) time.
+
+

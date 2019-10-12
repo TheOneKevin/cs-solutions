@@ -1,0 +1,56 @@
+ACC3P1.cpp  - Diverse Arrays (Number of subarrays with at least K distinct integers)
+BTS17P6.cpp - Sour Candy  (Number of moves, DP)
+BTS18P2.cpp - Letter Frequency (Letter frequency, PSA)
+CCC04S1.cpp - Fix (String Algorithms, Find prefix)
+CCC05S5.cpp - Pinball Ranking (Fenwick Tree, Array Inversions)
+CCC06S4.cpp - Groups (Advanced Math)
+CCC10S3.cpp - Firehose (Covering houses, binary search for answer)
+CCC14S4.cpp - Tinted Glass Window (2D PSA update & query)
+CCC15S4.cpp - Convex Fucking Hull (Fancy Dijkstra)
+CCC15J5.cpp - π-day (DP)
+CCC16S3.cpp - Phonomenal Reviews (Tree diameter)
+CCC17S3.cpp - Nailed It! (Simple math + Brute force)
+CCC17S4.cpp - Minimum Cost Flow (Custom MST)
+CCO07P2.cpp - Snowflakes (This is a meme)
+CCO10P1.cpp - Barking Dogs! (Simple BFS)
+CCO10P3.cpp - Wowow (Fenwick Tree + Fancy data structure)
+CCO10P4.cpp - Computer Purchase Return (DP)
+CCO12P1.cpp - Choose Your Own Arithmetic (Brute force + Recursion)
+CCO12P2.cpp - The Hungary Games (Strictly second shortest path with 2 Dijkstra calls)
+CCO13P2.cpp - Tourney**
+CCO16P4.cpp - O Canada (Bitwise operations)
+CCO16P5.cpp - Zombie Apocalypse**
+CCO18P1.cpp - Geese vs. Hawks (DP)
+
+CCOQR16P1.cpp - Stupendous Bowties
+
+COCI06C2P5.cpp - 
+COCI07C3P5.cpp - 
+COCI07C6P5.cpp - 
+COCI06C2P3.cpp - 
+COCI08C2P3.cpp - 
+COCI08C6P3.cpp - 
+COCI08C6P4.cpp - 
+COCI14C6P4.cpp - 
+COCI14C7P3.cpp - 
+COCI15C2P5.cpp - 
+
+DMOPC14C2P6.cpp - Selective Cutting (Fenwick Tree + Array Inversions)
+DMOPC15C1P5.cpp - Lelei and Dragon Scales
+DMOPC15C1P6.cpp - Lelei and Contest (Fenwick Tree RANGE Update & Query)
+DMOPC16C2P2.cpp - Ebola Outbreak
+DMOPC17C1P5.cpp - Intimidating Arrays (Fenwick Tree)
+DMOPC17C2P2.cpp - Balance (Parentheses)
+DMOPC17C5P3.cpp - Mimi and Primes (Simple Math)
+DMOPC18C1P1.cpp - Sorting (Simple implementation)
+DMOPC18C1P4.cpp - Sorting (Weird ad-hoc)
+DMOPC18C1P6.cpp - ?? (Sparse Table)
+DMOPC18C2P4.cpp - Damage Output (Subarray sum, not really dp)
+DMOPC18C3P2.cpp - 
+DMOPC18C4P2.cpp - 
+DMOPC18C4P3.cpp - 
+
+** Incomplete
+
+
+
